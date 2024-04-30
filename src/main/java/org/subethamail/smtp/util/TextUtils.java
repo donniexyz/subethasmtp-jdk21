@@ -1,5 +1,7 @@
 package org.subethamail.smtp.util;
 
+import lombok.experimental.UtilityClass;
+
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.Iterator;
@@ -8,6 +10,7 @@ import java.util.Iterator;
  * @author Jeff Schnitzer
  */
 @SuppressWarnings("unused")
+@UtilityClass
 public class TextUtils {
     /**
      * @return a delimited string containing the specified items

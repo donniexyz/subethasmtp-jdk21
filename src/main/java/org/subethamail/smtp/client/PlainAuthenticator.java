@@ -80,7 +80,7 @@ public class PlainAuthenticator implements Authenticator {
         out.write(0);
         out.write(user.getBytes(StandardCharsets.UTF_8));
         out.write(0);
-        out.write(password.getBytes("UTF-8"));
+        out.write(password.getBytes(StandardCharsets.UTF_8));
         return Base64.encodeToString(out.toByteArray(), false);
     }
 }

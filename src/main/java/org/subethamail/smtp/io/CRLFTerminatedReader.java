@@ -34,8 +34,9 @@ import java.io.UnsupportedEncodingException;
  * greater than or equal to MAX_LINE_LENGTH (998) which is defined
  * in <a href="http://rfc.net/rfc2822.html#s2.1.1.">RFC 2822</a>.
  */
+@SuppressWarnings("unused")
 public class CRLFTerminatedReader extends Reader {
-    static int MAX_LINE_LENGTH = 998;
+    static final int MAX_LINE_LENGTH = 998;
 
     @SuppressWarnings("unused")
     public static class TerminationException extends IOException {
@@ -90,7 +91,7 @@ public class CRLFTerminatedReader extends Reader {
     }
 
     private final StringBuffer lineBuffer = new StringBuffer();
-    private final int
+    private static final int
             EOF = -1,
             CR = 13,
             LF = 10;
@@ -155,12 +156,12 @@ public class CRLFTerminatedReader extends Reader {
                     case CR: //we got two (or more) CRs in a row
                         if (this.tainted == -1)
                             this.tainted = this.lineBuffer.length();
-                        this.lineBuffer.append((char) this.CR);
+                        this.lineBuffer.append((char) CR);
                         break;
                     default: //we got some other character following a CR
                         if (this.tainted == -1)
                             this.tainted = this.lineBuffer.length();
-                        this.lineBuffer.append((char) this.CR);
+                        this.lineBuffer.append((char) CR);
                         this.lineBuffer.append((char) inChar);
                         cr_just_received = false;
                 }

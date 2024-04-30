@@ -17,14 +17,14 @@ import java.io.OutputStream;
  *
  * @author Jeff Schnitzer
  */
-abstract public class ThresholdingOutputStream extends OutputStream {
+public abstract class ThresholdingOutputStream extends OutputStream {
     /** */
     protected OutputStream output;
 
     /** When to trigger
      * -- GETTER --
      * <p>
-     * the current threshold value.
+     * @return the current threshold value.
      */
     @Getter
     int threshold;
@@ -36,7 +36,7 @@ abstract public class ThresholdingOutputStream extends OutputStream {
 
     /**
      */
-    public ThresholdingOutputStream(OutputStream base, int thresholdBytes) {
+    protected ThresholdingOutputStream(OutputStream base, int thresholdBytes) {
         this.output = base;
         this.threshold = thresholdBytes;
     }
@@ -116,5 +116,5 @@ abstract public class ThresholdingOutputStream extends OutputStream {
      * @param current is the current number of bytes that have been written
      * @param predicted is the total number after the write completes
      */
-    abstract protected void thresholdReached(int current, int predicted) throws IOException;
+    protected abstract void thresholdReached(int current, int predicted) throws IOException;
 }

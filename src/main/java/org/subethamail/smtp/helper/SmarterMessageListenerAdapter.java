@@ -33,7 +33,7 @@ public class SmarterMessageListenerAdapter implements MessageHandlerFactory {
      */
     private static final int DEFAULT_DATA_DEFERRED_SIZE = 1024 * 1024 * 5;
 
-    private Collection<SmarterMessageListener> listeners;
+    private final Collection<SmarterMessageListener> listeners;
     private int dataDeferredSize;
 
     /**

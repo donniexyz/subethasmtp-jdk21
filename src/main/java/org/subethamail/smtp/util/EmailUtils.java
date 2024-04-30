@@ -3,11 +3,13 @@ package org.subethamail.smtp.util;
 
 import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
+import lombok.experimental.UtilityClass;
 
 /**
  * @author Jeff Schnitzer
  */
 @SuppressWarnings("unused")
+@UtilityClass
 public class EmailUtils {
     /**
      * @return true if the string is a valid email address

@@ -44,11 +44,11 @@ public class SMTPServer {
     private static final Logger log = LoggerFactory.getLogger(SMTPServer.class);
 
     /** Hostname used if we can't find one */
-    private final static String UNKNOWN_HOSTNAME = "localhost";
+    private static final String UNKNOWN_HOSTNAME = "localhost";
 
     /**
      * -- GETTER --
-     * null means all interfaces
+     * @return null means all interfaces
      */
     @Getter
     private InetAddress bindAddress = null;    // default to all interfaces
@@ -60,8 +60,11 @@ public class SMTPServer {
     /**
      * -- GETTER --
      *  The backlog is the Socket backlog.
+     * <p>
      *  The backlog argument must be a positive value greater than 0.
      *  If the value passed if equal or less than 0, then the default value will be assumed.
+     *
+     * @return the backlog
      */
     @Getter
     private int backlog = 50;
@@ -75,16 +78,22 @@ public class SMTPServer {
 
     /**
      * The factory for message handlers, cannot be null
+     *
+     * @return the factory for message handlers, cannot be null
      */
     @Getter
     private MessageHandlerFactory messageHandlerFactory;
     /**
      * The factory for auth handlers, or null if no such factory has been set.
+     *
+     * @return the factory for auth handlers, or null if no such factory has been set.
      */
     @Getter
     private AuthenticationHandlerFactory authenticationHandlerFactory;
     /**
      * The ExecutorService handling client connections
+     *
+     * @return the ExecutorService handling client connections
      */
     @Getter
     private ExecutorService executorService;
@@ -92,6 +101,8 @@ public class SMTPServer {
     /**
      *  The CommandHandler manages handling the SMTP commands
      *  such as QUIT, MAIL, RCPT, DATA, etc.
+     *
+     * @return An instance of CommandHandler
      */
     @Getter
     private final CommandHandler commandHandler;
@@ -126,18 +137,12 @@ public class SMTPServer {
      * set a hard limit on the maximum number of connections this server will accept
      * once we reach this limit, the server will gracefully reject new connections.
      * Default is 1000.
-     * -- GETTER --
-     *
-
      */
     @Getter
     private int maxConnections = 1000;
 
     /**
      * The timeout for waiting for data on a connection is one minute: 1000 * 60 * 1
-     * -- GETTER --
-     *
-
      */
     @Getter
     private int connectionTimeout = 1000 * 60 * 1;
@@ -154,6 +159,8 @@ public class SMTPServer {
      * during the MAIL phase, the message will be rejected at that time. (RFC 1870)
      * Default is 0.  Note this doesn't actually enforce any limits on the message being
      * read; you must do that yourself when reading data.
+     *
+     * @return the maxMessageSize
      */
     @Getter
     private int maxMessageSize = 0;

@@ -42,19 +42,19 @@ Received: from iamhelo (wasabi.infohazard.org [209.237.247.14])
         DateFormat fmt = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z (z)", Locale.US);
         String timestamp = fmt.format(new Date());
 
-        StringBuilder header = new StringBuilder();
-        header.append("Received: from ").append(heloHost).append(" (").append(constructTcpInfo(host)).append(")\r\n");
-        header.append("        by ").append(whoami).append("\r\n");
-        header.append("        with SMTP");
+        StringBuilder headerStringBuilder = new StringBuilder();
+        headerStringBuilder.append("Received: from ").append(heloHost).append(" (").append(constructTcpInfo(host)).append(")\r\n");
+        headerStringBuilder.append("        by ").append(whoami).append("\r\n");
+        headerStringBuilder.append("        with SMTP");
         if (softwareName != null)
-            header.append(" (").append(softwareName).append(")");
-        header.append(" id ").append(id);
+            headerStringBuilder.append(" (").append(softwareName).append(")");
+        headerStringBuilder.append(" id ").append(id);
         if (singleRecipient != null)
-            header.append("\r\n        for ").append(singleRecipient);
-        header.append(";\r\n");
-        header.append("        ").append(timestamp).append("\r\n");
+            headerStringBuilder.append("\r\n        for ").append(singleRecipient);
+        headerStringBuilder.append(";\r\n");
+        headerStringBuilder.append("        ").append(timestamp).append("\r\n");
 
-        this.header = new ByteArrayInputStream(TextUtils.getAsciiBytes(header.toString()));
+        this.header = new ByteArrayInputStream(TextUtils.getAsciiBytes(headerStringBuilder.toString()));
     }
 
     /**

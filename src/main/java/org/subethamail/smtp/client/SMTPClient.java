@@ -21,6 +21,8 @@ import java.net.UnknownHostException;
  */
 @SuppressWarnings({"DuplicateThrows", "unused"})
 public class SMTPClient {
+
+    private static final String ERR_MESSAGE_MALFORMED_REPLY = "Malformed SMTP reply: ";
     /** 5 minutes */
     private static final int CONNECT_TIMEOUT = 300 * 1000;
 
@@ -32,7 +34,7 @@ public class SMTPClient {
 
     /** the local socket address
      * -- GETTER --
-     *  Returns the local socket address.
+     * @return Returns the local socket address.
      */
     @Getter
     private SocketAddress bindpoint;
@@ -40,9 +42,9 @@ public class SMTPClient {
     /**
      * True if the client has been successfully connected to the server and not
      * it has not been closed yet.
-     *
+     * <p>
      * -- GETTER --
-     *  Returns true if the client is connected to the server.
+     * @return Returns true if the client is connected to the server.
      */
     @Getter
     private boolean connected;
@@ -151,7 +153,7 @@ public class SMTPClient {
             this.hostPort = host + ":" + port;
 
         if (log.isDebugEnabled())
-            log.debug("Connecting to " + this.hostPort);
+            log.debug("Connecting to {}", this.hostPort);
 
         this.socket = createSocket();
         this.socket.bind(this.bindpoint);
@@ -195,7 +197,7 @@ public class SMTPClient {
      */
     protected void send(String msg) throws IOException {
         if (log.isDebugEnabled())
-            log.debug("Client: " + msg);
+            log.debug("Client: {}", msg);
         if (!connected)
             throw new IllegalStateException("Not connected");
 
@@ -212,7 +214,7 @@ public class SMTPClient {
             throw new IllegalStateException("Not connected");
 
         StringBuilder builder = new StringBuilder();
-        String line = null;
+        String line;
 
         boolean done = false;
         do {
@@ -221,14 +223,14 @@ public class SMTPClient {
                 if (builder.isEmpty())
                     throw new EOFException("Server disconnected unexpectedly, no reply received");
                 else
-                    throw new IOException("Malformed SMTP reply: " + builder);
+                    throw new IOException(ERR_MESSAGE_MALFORMED_REPLY + builder);
             }
 
             if (log.isDebugEnabled())
-                log.debug("Server: " + line);
+                log.debug("Server: {}", line);
 
             if (line.length() < 4)
-                throw new IOException("Malformed SMTP reply: " + line);
+                throw new IOException(ERR_MESSAGE_MALFORMED_REPLY + line);
             builder.append(line.substring(4));
 
             if (line.charAt(3) == '-')
@@ -243,7 +245,7 @@ public class SMTPClient {
         try {
             code = Integer.parseInt(codeString);
         } catch (NumberFormatException e) {
-            throw new IOException("Malformed SMTP reply: " + line, e);
+            throw new IOException(ERR_MESSAGE_MALFORMED_REPLY + line, e);
         }
 
         return new Response(code, builder.toString());
@@ -284,9 +286,9 @@ public class SMTPClient {
                 this.socket.close();
 
                 if (log.isDebugEnabled())
-                    log.debug("Closed connection to " + this.hostPort);
+                    log.debug("Closed connection to {}", this.hostPort);
             } catch (IOException ex) {
-                log.error("Problem closing connection to " + this.hostPort, ex);
+                log.error("Problem closing connection to {}", this.hostPort, ex);
             }
         }
     }

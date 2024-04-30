@@ -1,5 +1,7 @@
 package org.subethamail.smtp.util;
 
+import lombok.experimental.UtilityClass;
+
 import java.util.Arrays;
 
 /** A very fast and memory efficient class to encode and decode to and from BASE64 in full accordance
@@ -70,7 +72,9 @@ import java.util.Arrays;
  *         Time: 11:31:11
  */
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "ReassignedVariable",  "ForLoopReplaceableByForEach",  // modern rules are not applicable to old schools
+        "java:S127", "java:S3776", "java:S1168", "java:S3358", "java:S1659"})       // sonarlint deserves its own world
+@UtilityClass
 public class Base64 {
     private static final char[] CA = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".toCharArray();
     private static final int[] IA = new int[256];

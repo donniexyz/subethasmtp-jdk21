@@ -23,7 +23,7 @@ public class CommandHandler {
      * The map of known SMTP commands. Keys are upper case names of the
      * commands.
      */
-    private Map<String, Command> commandMap = new HashMap<>();
+    private final Map<String, Command> commandMap = new HashMap<>();
 
     /**
      *
@@ -52,7 +52,7 @@ public class CommandHandler {
      */
     public void addCommand(Command command) {
         if (log.isDebugEnabled())
-            log.debug("Added command: " + command.getName());
+            log.debug("Added command: {}", command.getName());
 
         this.commandMap.put(command.getName(), command);
     }
@@ -131,8 +131,6 @@ public class CommandHandler {
         if (string == null || string.length() < 4)
             throw new InvalidCommandNameException("Error: bad syntax");
         String[] split = CommandRegistry.split(string);
-        if (null == split)
-            throw new InvalidCommandNameException("Error: bad syntax");
         return split;
     }
 }

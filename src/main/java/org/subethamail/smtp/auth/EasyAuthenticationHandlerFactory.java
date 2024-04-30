@@ -4,7 +4,7 @@ import lombok.Getter;
 
 /**
  * This a convenient class that saves you setting up the factories that we know
- * about; you can always add more afterwards. Currently this factory supports:
+ * about; you can always add more afterward. Currently, this factory supports:
  * <p>
  * PLAIN LOGIN
  *

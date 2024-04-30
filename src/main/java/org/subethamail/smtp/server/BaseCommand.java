@@ -16,16 +16,14 @@ import java.util.StringTokenizer;
  * @author Jeff Schnitzer
  * @author Scott Hernandez
  */
-abstract public class BaseCommand implements Command {
+public abstract class BaseCommand implements Command {
     @SuppressWarnings("unused")
     private static final Logger log = LoggerFactory.getLogger(BaseCommand.class);
 
     /** Name of the command, ie HELO
-     * -- GETTER --
-     *
      */
     @Getter
-    private String name;
+    private final String name;
     /** The help message for this command*/
     private HelpMessage helpMsg;
 
@@ -44,7 +42,7 @@ abstract public class BaseCommand implements Command {
     /**
      * This is the main method that you need to override in order to implement a command.
      */
-    abstract public void execute(String commandString, Session context)
+    public abstract void execute(String commandString, Session context)
             throws IOException, DropConnectionException;
 
     /** */

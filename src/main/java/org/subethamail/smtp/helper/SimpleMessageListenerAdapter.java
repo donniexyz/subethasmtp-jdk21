@@ -29,7 +29,7 @@ public class SimpleMessageListenerAdapter implements MessageHandlerFactory {
      */
     private static final int DEFAULT_DATA_DEFERRED_SIZE = 1024 * 1024 * 5;
 
-    private Collection<SimpleMessageListener> listeners;
+    private final Collection<SimpleMessageListener> listeners;
     private int dataDeferredSize;
 
     /**
@@ -137,6 +137,7 @@ public class SimpleMessageListenerAdapter implements MessageHandlerFactory {
 
         /** */
         public void done() {
+            // nothing to do
         }
     }
 }

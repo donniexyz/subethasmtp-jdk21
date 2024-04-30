@@ -31,7 +31,7 @@ public class Session implements Runnable, MessageContext {
     /** A link to our parent server
      * -- GETTER --
      * <p>
-     * a reference to the master server object
+     * @return a reference to the master server object
      */
     @Getter
     private final SMTPServer server;
@@ -67,7 +67,7 @@ public class Session implements Runnable, MessageContext {
      * -- GETTER --
      *  This method is only used by the start tls command
      * <p>
-     * the current socket to the client
+     * @return the current socket to the client
      */
     @Getter
     private Socket socket;
@@ -75,7 +75,7 @@ public class Session implements Runnable, MessageContext {
     /**
      * -- GETTER --
      * <p>
-     * the cooked CRLF-terminated reader from the client
+     * @return the cooked CRLF-terminated reader from the client
      */
     @Getter
     private CRLFTerminatedReader reader;
@@ -89,7 +89,7 @@ public class Session implements Runnable, MessageContext {
      * up to the end of the DATA command).
      * -- GETTER --
      * <p>
-     * the current message handler
+     * @return the current message handler
      */
     @Getter
     private MessageHandler messageHandler;
@@ -119,7 +119,7 @@ public class Session implements Runnable, MessageContext {
      * If they didn't, the value will be 0.
      * -- GETTER --
      * <p>
-     * the maxMessageSize
+     * @return the maxMessageSize
      */
     @Getter
     private int declaredMessageSize = 0;
@@ -174,6 +174,7 @@ public class Session implements Runnable, MessageContext {
                     // the message later.
                     this.sendResponse("421 4.4.0 Problem attempting to execute commands. Please try again later.");
                 } catch (IOException ignored) {
+                    // do nothing
                 }
 
                 if (log.isWarnEnabled())
@@ -186,10 +187,10 @@ public class Session implements Runnable, MessageContext {
             } catch (IOException e1) {
                 // just swallow this, the outer exception is the real problem.
             }
-            if (e instanceof RuntimeException)
-                throw (RuntimeException) e;
-            else if (e instanceof Error)
-                throw (Error) e;
+            if (e instanceof RuntimeException re)
+                throw re;
+            else if (e instanceof Error er)
+                throw er;
             else
                 throw new RuntimeException("Unexpected exception", e);
         } finally {
@@ -241,7 +242,7 @@ public class Session implements Runnable, MessageContext {
                 }
 
                 if (log.isDebugEnabled())
-                    log.debug("Client: " + line);
+                    log.debug("Client: {}", line);
 
                 this.server.getCommandHandler().handleCommand(this, line);
             } catch (DropConnectionException ex) {
@@ -317,7 +318,7 @@ public class Session implements Runnable, MessageContext {
     /** Sends the response to the client */
     public void sendResponse(String response) throws IOException {
         if (log.isDebugEnabled())
-            log.debug("Server: " + response);
+            log.debug("Server: {}", response);
 
         this.writer.print(response + "\r\n");
         this.writer.flush();
@@ -439,7 +440,7 @@ public class Session implements Runnable, MessageContext {
         if (this.messageHandler != null) {
             try {
                 this.messageHandler.done();
-            } catch (Throwable ex) {
+            } catch (Exception ex) {
                 log.error("done() threw exception", ex);
             }
         }

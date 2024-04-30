@@ -49,7 +49,7 @@ public class StartTLSCommand extends BaseCommand {
 
             SSLSocket s = sess.getServer().createSSLSocket(socket);
             s.startHandshake();
-            log.debug("Cipher suite: " + s.getSession().getCipherSuite());
+            log.debug("Cipher suite: {}", s.getSession().getCipherSuite());
 
             sess.setSocket(s);
             sess.resetSmtpProtocol(); // clean state
@@ -68,9 +68,9 @@ public class StartTLSCommand extends BaseCommand {
             // This will at least limit it to a single WARN line and not a whole stacktrace.
             // Unfortunately it might catch some other types of SSLHandshakeException (if
             // in fact other types exist), but oh well.
-            log.warn("startTLS() failed: " + ex);
+            log.warn("startTLS() failed", ex);
         } catch (IOException ex) {
-            log.warn("startTLS() failed: " + ex.getMessage(), ex);
+            log.warn("startTLS() failed: {}", ex.getMessage(), ex);
         }
     }
 }

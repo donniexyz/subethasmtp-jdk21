@@ -19,7 +19,7 @@ import java.util.Map;
  *
  * @author Jeff Schnitzer
  */
-@SuppressWarnings("DuplicateThrows")
+@SuppressWarnings({"DuplicateThrows", "unused"})
 public class SmartClient extends SMTPClient {
     /** */
     private static final Logger log = LoggerFactory.getLogger(SmartClient.class);
@@ -234,7 +234,7 @@ public class SmartClient extends SMTPClient {
             if (this.isConnected() && !this.serverClosingTransmissionChannel)
                 this.sendAndCheck("QUIT");
         } catch (IOException ex) {
-            log.warn("Failed to issue QUIT to " + this.hostPort);
+            log.warn("Failed to issue QUIT to {}", this.hostPort);
         }
 
         this.close();

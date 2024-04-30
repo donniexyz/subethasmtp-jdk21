@@ -22,39 +22,43 @@ import java.util.StringTokenizer;
  * 4954 (SMTP Service Extension for Authentication). However this implementation
  * is likely usable with clients following any of the two documents.
  *
- * @see <a href="http://tools.ietf.org/html/draft-murchison-sasl-login-00">The
- *      LOGIN SASL Mechanism</a>
- * @see <a
- *      href="http://download.microsoft.com/download/5/d/d/5dd33fdf-91f5-496d-9884-0a0b0ee698bb/%5BMS-XLOGIN%5D.pdf">[MS-XLOGIN]</a>
- *
  * @author Marco Trevisan <mrctrevisan@yahoo.it>
  * @author Jeff Schnitzer
+ * @see <a href="http://tools.ietf.org/html/draft-murchison-sasl-login-00">The
+ * LOGIN SASL Mechanism</a>
+ * @see <a
+ * href="http://download.microsoft.com/download/5/d/d/5dd33fdf-91f5-496d-9884-0a0b0ee698bb/%5BMS-XLOGIN%5D.pdf">[MS-XLOGIN]</a>
  */
 public class LoginAuthenticationHandlerFactory implements AuthenticationHandlerFactory {
-    static List<String> MECHANISMS = new ArrayList<>(1);
+    static final List<String> MECHANISMS = new ArrayList<>(List.of("LOGIN"));
+    private static final String ERR_MESSAGE_INVALID_BASE64 = "Invalid command argument, not a valid Base64 string";
 
-    static {
-        MECHANISMS.add("LOGIN");
-    }
 
     private UsernamePasswordValidator helper;
 
-    /** */
+    /**
+     *
+     */
     public LoginAuthenticationHandlerFactory(UsernamePasswordValidator helper) {
         this.helper = helper;
     }
 
-    /** */
+    /**
+     *
+     */
     public List<String> getAuthenticationMechanisms() {
         return MECHANISMS;
     }
 
-    /** */
+    /**
+     *
+     */
     public AuthenticationHandler create() {
         return new Handler();
     }
 
     /**
+     *
      */
     class Handler implements AuthenticationHandler {
         private String username;
@@ -78,7 +82,7 @@ public class LoginAuthenticationHandlerFactory implements AuthenticationHandlerF
                     byte[] decoded = Base64.decode(stk.nextToken());
                     if (decoded == null)
                         throw new RejectException(501, /*5.5.4*/
-                                "Invalid command argument, not a valid Base64 string");
+                                ERR_MESSAGE_INVALID_BASE64);
                     username = TextUtils.getStringUtf8(decoded);
 
                     return "334 "
@@ -96,7 +100,7 @@ public class LoginAuthenticationHandlerFactory implements AuthenticationHandlerF
                 byte[] decoded = Base64.decode(clientInput);
                 if (decoded == null) {
                     throw new RejectException(501, /*5.5.4*/
-                            "Invalid command argument, not a valid Base64 string");
+                            ERR_MESSAGE_INVALID_BASE64);
                 }
 
                 this.username = TextUtils.getStringUtf8(decoded);
@@ -109,7 +113,7 @@ public class LoginAuthenticationHandlerFactory implements AuthenticationHandlerF
             byte[] decoded = Base64.decode(clientInput);
             if (decoded == null) {
                 throw new RejectException(501, /*5.5.4*/
-                        "Invalid command argument, not a valid Base64 string");
+                        ERR_MESSAGE_INVALID_BASE64);
             }
 
             this.password = TextUtils.getStringUtf8(decoded);

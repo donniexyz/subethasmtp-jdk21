@@ -18,7 +18,7 @@ import java.io.InputStream;
  * @author Jeff Schnitzer
  */
 public class DataCommand extends BaseCommand {
-    private final static int BUFFER_SIZE = 1024 * 32;    // 32k seems reasonable
+    private static final int BUFFER_SIZE = 1024 * 32;    // 32k seems reasonable
 
     /** */
     public DataCommand() {

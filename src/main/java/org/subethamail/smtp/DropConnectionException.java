@@ -12,7 +12,6 @@ package org.subethamail.smtp;
  */
 @SuppressWarnings("unused")
 public class DropConnectionException extends RejectException {
-    int code;
 
     /** */
     public DropConnectionException() {
@@ -27,6 +26,5 @@ public class DropConnectionException extends RejectException {
     /** */
     public DropConnectionException(int code, String message) {
         super(code, message);
-		this.code = code;
     }
 }

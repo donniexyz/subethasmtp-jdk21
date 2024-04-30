@@ -19,11 +19,7 @@ import java.util.StringTokenizer;
  * @author Ian White <ibwhite@gmail.com>
  */
 public class PlainAuthenticationHandlerFactory implements AuthenticationHandlerFactory {
-    static List<String> MECHANISMS = new ArrayList<>(1);
-
-    static {
-        MECHANISMS.add("PLAIN");
-    }
+    static final List<String> MECHANISMS = new ArrayList<>(List.of("PLAIN"));
 
     private UsernamePasswordValidator helper;
 
@@ -49,6 +45,7 @@ public class PlainAuthenticationHandlerFactory implements AuthenticationHandlerF
         private String password;
 
         /* */
+        @SuppressWarnings("StatementWithEmptyBody")
         public String auth(String clientInput) throws RejectException {
             StringTokenizer stk = new StringTokenizer(clientInput);
             String secret = stk.nextToken();

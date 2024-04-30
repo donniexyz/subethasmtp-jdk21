@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author Ville Skyttä (contributed some encoding tests)
  * @author Dony Zulkarnaen
  */
-public class MessageContentTest {
+class MessageContentTest {
     /**
      *
      */
@@ -85,7 +85,7 @@ public class MessageContentTest {
      *
      */
     @Test
-    public void testReceivedHeader() throws Exception {
+    void testReceivedHeader() throws Exception {
         MimeMessage message = new MimeMessage(this.session);
         message.addRecipient(Message.RecipientType.TO, new InternetAddress("anyone@anywhere.com"));
         message.setFrom(new InternetAddress("someone@somewhereelse.com"));
@@ -105,7 +105,7 @@ public class MessageContentTest {
      *
      */
     @Test
-    public void testMultipleRecipients() throws Exception {
+    void testMultipleRecipients() throws Exception {
         MimeMessage message = new MimeMessage(this.session);
         message.addRecipient(Message.RecipientType.TO, new InternetAddress("anyone@anywhere.com"));
         message.addRecipient(Message.RecipientType.TO, new InternetAddress("anyone2@anywhere.com"));
@@ -122,7 +122,7 @@ public class MessageContentTest {
      *
      */
     @Test
-    public void testLargeMessage() throws Exception {
+    void testLargeMessage() throws Exception {
         MimeMessage message = new MimeMessage(this.session);
         message.addRecipient(Message.RecipientType.TO, new InternetAddress("anyone@anywhere.com"));
         message.addRecipient(Message.RecipientType.TO, new InternetAddress("anyone2@anywhere.com"));
@@ -169,7 +169,7 @@ public class MessageContentTest {
      *
      */
     @Test
-    public void testIso885915EightBitMessage() throws Exception {
+    void testIso885915EightBitMessage() throws Exception {
         // Beware editor/compiler character encoding issues; safest to put unicode escapes here
 
         String body = "\u0080uro\r\n"; // should be the euro symbol
@@ -213,7 +213,7 @@ public class MessageContentTest {
      *
      */
     @Test
-    public void testBinaryEightBitMessage() throws Exception {
+    void testBinaryEightBitMessage() throws Exception {
         byte[] body = new byte[64];
         new Random().nextBytes(body);
 

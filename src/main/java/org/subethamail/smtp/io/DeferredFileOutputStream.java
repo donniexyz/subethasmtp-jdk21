@@ -4,6 +4,9 @@
  */
 package org.subethamail.smtp.io;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 
 /**
@@ -17,7 +20,10 @@ import java.io.*;
  *
  * @author Jeff Schnitzer
  */
+
 public class DeferredFileOutputStream extends ThresholdingOutputStream {
+    private static final Logger log = LoggerFactory.getLogger(DeferredFileOutputStream.class);
+
     /**
      * Initial size of the byte array buffer.  Better to make this
      * large to start with so that we can avoid reallocs; mail
@@ -71,8 +77,8 @@ public class DeferredFileOutputStream extends ThresholdingOutputStream {
      *  depending on what state we are in.
      */
     public InputStream getInputStream() throws IOException {
-        if (this.output instanceof BetterByteArrayOutputStream) {
-            return ((BetterByteArrayOutputStream) this.output).getInputStream();
+        if (this.output instanceof BetterByteArrayOutputStream better) {
+            return better.getInputStream();
         } else {
             if (!this.closed) {
                 this.output.flush();
@@ -95,8 +101,10 @@ public class DeferredFileOutputStream extends ThresholdingOutputStream {
             this.closed = true;
         }
 
-        if (this.outFile != null)
-            this.outFile.delete();
+        if (this.outFile != null) {
+            boolean deleted = this.outFile.delete();
+            log.info("File {} deletion result {}", outFile.getName(), deleted);
+        }
     }
 
 }

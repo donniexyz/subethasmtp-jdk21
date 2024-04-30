@@ -26,7 +26,7 @@ import java.io.OutputStream;
 
 /**
  * A Filter for use with SMTP or other protocols in which lines must end with
- * CRLF. Converts every "isolated" occourency of \r or \n with \r\n
+ * CRLF. Converts every "isolated" occurrence of \r or \n with \r\n
  * <p>
  * RFC 2821 #2.3.7 mandates that line termination is CRLF, and that CR and LF
  * must not be transmitted except in that pairing. If we get a naked LF, convert
@@ -40,11 +40,11 @@ public class CRLFOutputStream extends FilterOutputStream {
      */
     protected int statusLast;
 
-    protected final static int LAST_WAS_OTHER = 0;
+    protected static final int LAST_WAS_OTHER = 0;
 
-    protected final static int LAST_WAS_CR = 1;
+    protected static final int LAST_WAS_CR = 1;
 
-    protected final static int LAST_WAS_LF = 2;
+    protected static final int LAST_WAS_LF = 2;
 
     protected boolean startOfLine = true;
 
@@ -63,7 +63,7 @@ public class CRLFOutputStream extends FilterOutputStream {
 
     /**
      * Writes a byte to the stream Fixes any naked CR or LF to the RFC 2821
-     * mandated CFLF pairing.
+     * mandated CRLF pairing.
      *
      * @param b
      *                the byte to write
