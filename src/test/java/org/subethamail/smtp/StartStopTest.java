@@ -1,15 +1,14 @@
 package org.subethamail.smtp;
 
-import java.util.Properties;
-
 import jakarta.mail.Session;
-
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.subethamail.wiser.Wiser;
+
+import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,59 +17,68 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * shut down.
  *
  * @author Jon Stevens
+ * @author Dony Zulkarnaen
  */
-public class StartStopTest
-{
-	/** */
-	@SuppressWarnings("unused")
-	private static Logger log = LoggerFactory.getLogger(StartStopTest.class);
+class StartStopTest {
+    /**
+     *
+     */
+    @SuppressWarnings("unused")
+    private static final Logger log = LoggerFactory.getLogger(StartStopTest.class);
 
-	/** */
-	public static final int PORT = 2569;
+    /**
+     *
+     */
+    public static final int PORT = 2569;
 
-	/** */
-	protected Session session;
+    /**
+     *
+     */
+    protected Session session;
 
-	protected int counter = 0;
-
-
-	/** */
-	@BeforeEach
-	protected void setUp() throws Exception
-	{
-
-		Properties props = new Properties();
-		props.setProperty("mail.smtp.host", "localhost");
-		props.setProperty("mail.smtp.port", Integer.toString(PORT));
-		this.session = Session.getDefaultInstance(props);
-	}
+    protected int counter = 0;
 
 
-	/** */
-	@Test
-	public void testMultipleStartStop() throws Exception
-	{
-		for (int i = 0; i < 10; i++)
-		{
-			this.startStop(i > 5);
-		}
-		assertEquals(this.counter, 10);
-	}
+    /**
+     *
+     */
+    @BeforeEach
+    protected void setUp() {
 
-	/** */
-	private void startStop(boolean pause) throws Exception
-	{
-		Wiser wiser = new Wiser();
-		wiser.setPort(PORT);
+        Properties props = new Properties();
+        props.setProperty("mail.smtp.host", "localhost");
+        props.setProperty("mail.smtp.port", Integer.toString(PORT));
+        this.session = Session.getDefaultInstance(props);
+    }
 
-		wiser.start();
 
-		if (pause)
-			Thread.sleep(1000);
+    /**
+     *
+     */
+    @Test
+    void testMultipleStartStop() {
+        for (int i = 0; i < 10; i++) {
+            this.startStop(i > 5);
+        }
+        assertEquals(10, this.counter);
+    }
 
-		wiser.stop();
+    /**
+     *
+     */
+    @SneakyThrows
+    private void startStop(boolean pause) {
+        Wiser wiser = new Wiser();
+        wiser.setPort(PORT);
 
-		this.counter++;
-	}
+        wiser.start();
+
+        if (pause)
+            Thread.sleep(1000);
+
+        wiser.stop();
+
+        this.counter++;
+    }
 
 }

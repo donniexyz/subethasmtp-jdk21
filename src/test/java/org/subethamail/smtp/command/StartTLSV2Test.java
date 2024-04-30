@@ -11,15 +11,16 @@ import org.subethamail.wiser.Wiser;
 /**
  * @author Dony Zulkarnaen
  */
-class QuitTest2 {
+class StartTLSV2Test {
     static Wiser wiser;
     static Client client;
+    static int port = TestWiser.PORT + 8;
 
 
     @BeforeAll
     @SneakyThrows
     static void init() {
-        wiser = TestWiser.init();
+        wiser = TestWiser.init(port);
 
         wiser.start();
     }
@@ -30,14 +31,14 @@ class QuitTest2 {
     @Test
     void testQuit() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             client.expect("220");
 
             client.send("HELO foo.com");
             client.expect("250");
 
-            client.send("MAIL FROM: test@example.com");
-            client.expect("250 Ok");
+            client.send("STARTTLS foo");
+            client.expect("501 Syntax error (no parameters allowed)");
 
             client.send("QUIT");
             client.expect("221 Bye");

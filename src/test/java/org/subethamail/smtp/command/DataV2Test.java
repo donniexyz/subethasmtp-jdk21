@@ -11,15 +11,16 @@ import org.subethamail.wiser.Wiser;
 /**
  * @author Dony Zulkarnaen
  */
-public class DataTest2 {
+class DataV2Test {
     static Wiser wiser;
     static Client client;
+    static int port = TestWiser.PORT + 3;
 
 
     @BeforeAll
     @SneakyThrows
     static void init() {
-        wiser = TestWiser.init();
+        wiser = TestWiser.init(port);
 
         wiser.start();
     }
@@ -27,7 +28,7 @@ public class DataTest2 {
     @Test
     void testNeedMail() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
 
             client.expect("220");
 
@@ -45,7 +46,7 @@ public class DataTest2 {
     @Test
     void testNeedRcpt() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             client.expect("220");
 
             client.send("HELO foo.com");
@@ -65,7 +66,7 @@ public class DataTest2 {
     @Test
     void testData() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             client.expect("220");
 
             client.send("HELO foo.com");
@@ -88,7 +89,7 @@ public class DataTest2 {
     @Test
     void testRsetAfterData() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             client.expect("220");
 
             client.send("HELO foo.com");

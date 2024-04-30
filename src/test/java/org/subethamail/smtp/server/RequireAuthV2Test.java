@@ -16,7 +16,7 @@ import org.subethamail.wiser.Wiser;
 /**
  * @author Dony Zulkarnaen
  */
-class RequireAuthTest2 {
+class RequireAuthV2Test {
     static final String REQUIRED_USERNAME = "myUserName";
     static final String REQUIRED_PASSWORD = "mySecret01";
 
@@ -30,12 +30,13 @@ class RequireAuthTest2 {
 
     static Wiser wiser;
     static Client client;
+    static int port = TestWiser.PORT + 9;
 
 
     @BeforeAll
     @SneakyThrows
     static void init() {
-        wiser = TestWiser.init();
+        wiser = TestWiser.init(port);
 
         UsernamePasswordValidator validator = new RequiredUsernamePasswordValidator();
 
@@ -52,7 +53,7 @@ class RequireAuthTest2 {
     @Test
     void testAuthRequired() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             client.expect("220");
 
             client.send("HELO foo.com");
@@ -90,7 +91,7 @@ class RequireAuthTest2 {
     @Test
     void testAuthSuccess() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             client.expect("220");
 
             client.send("HELO foo.com");

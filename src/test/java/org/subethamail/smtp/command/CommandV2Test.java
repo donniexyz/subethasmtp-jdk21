@@ -11,36 +11,30 @@ import org.subethamail.wiser.Wiser;
 /**
  * @author Dony Zulkarnaen
  */
-class StartTLSTest2 {
+class CommandV2Test {
+
     static Wiser wiser;
     static Client client;
+    static int port = TestWiser.PORT + 2 ;
 
 
     @BeforeAll
     @SneakyThrows
     static void init() {
-        wiser = TestWiser.init();
+        wiser = TestWiser.init(port);
 
         wiser.start();
     }
 
-    /**
-     *
-     */
     @Test
-    void testQuit() {
+    void testCommandHandling() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             client.expect("220");
 
-            client.send("HELO foo.com");
-            client.expect("250");
+            client.send("blah blah blah");
+            client.expect("500 Error: command not implemented");
 
-            client.send("STARTTLS foo");
-            client.expect("501 Syntax error (no parameters allowed)");
-
-            client.send("QUIT");
-            client.expect("221 Bye");
         });
     }
 }

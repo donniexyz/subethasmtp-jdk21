@@ -4,7 +4,6 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.subethamail.smtp.auth.EasyAuthenticationHandlerFactory;
 import org.subethamail.smtp.auth.UsernamePasswordValidator;
 import org.subethamail.smtp.helper.TestWiser;
 import org.subethamail.smtp.util.Client;
@@ -13,22 +12,20 @@ import org.subethamail.wiser.Wiser;
 /**
  * @author Dony Zulkarnaen
  */
-public class RequireTlsTest2 {
+class RequireTlsV2Test {
 
     static Wiser wiser;
     static Client client;
+    static int port = TestWiser.PORT + 10;
 
 
     @BeforeAll
     @SneakyThrows
     static void init() {
-        wiser = TestWiser.init();
+        wiser = TestWiser.init(port);
 
-        UsernamePasswordValidator validator = new RequireAuthTest2.RequiredUsernamePasswordValidator();
-
-        EasyAuthenticationHandlerFactory fact = new EasyAuthenticationHandlerFactory(validator);
-        wiser.getServer().setAuthenticationHandlerFactory(fact);
-        wiser.getServer().setRequireAuth(true);
+        UsernamePasswordValidator validator = new RequireAuthV2Test.RequiredUsernamePasswordValidator();
+        wiser.getServer().setRequireTLS(true);
         wiser.start();
     }
 
@@ -37,9 +34,9 @@ public class RequireTlsTest2 {
      *
      */
     @Test
-    public void testNeedSTARTTLS() {
+    void testNeedSTARTTLS() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             client.expect("220");
 
             client.send("HELO foo.com");

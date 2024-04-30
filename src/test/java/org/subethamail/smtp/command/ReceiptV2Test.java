@@ -11,15 +11,16 @@ import org.subethamail.wiser.Wiser;
 /**
  * @author Dony Zulkarnaen
  */
-public class ReceiptTest2 {
+class ReceiptV2Test {
     static Wiser wiser;
     static Client client;
+    static int port = TestWiser.PORT + 7;
 
 
     @BeforeAll
     @SneakyThrows
     static void init() {
-        wiser = TestWiser.init();
+        wiser = TestWiser.init(port);
 
         wiser.start();
     }
@@ -30,7 +31,7 @@ public class ReceiptTest2 {
     @Test
     void testReceiptBeforeMail() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             client.expect("220");
 
             client.send("HELO foo.com");
@@ -47,7 +48,7 @@ public class ReceiptTest2 {
     @Test
     void testReceiptErrorInParams() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             client.expect("220");
 
             client.send("HELO foo.com");
@@ -67,7 +68,7 @@ public class ReceiptTest2 {
     @Test
     void testReceiptAccept() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             client.expect("220");
 
             client.send("HELO foo.com");
@@ -90,7 +91,7 @@ public class ReceiptTest2 {
     @Test
     void testReceiptNoWhiteSpace() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             client.expect("220");
 
             client.send("HELO foo.com");

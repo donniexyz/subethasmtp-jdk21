@@ -11,7 +11,7 @@ import org.subethamail.smtp.helper.SimpleMessageListener;
 import org.subethamail.smtp.helper.SimpleMessageListenerAdapter;
 import org.subethamail.smtp.server.SMTPServer;
 
-public class ThreadDeathLoggingTest
+class ThreadDeathLoggingTest
 {
 	/**
 	 * This test can be used to check if an Error or RuntimeException actually
@@ -24,7 +24,7 @@ public class ThreadDeathLoggingTest
 	 */
 	@Disabled("Requires manual setup and verification")
 	@Test()
-	public void testNoMailJar() throws SMTPException, IOException
+	void testNoMailJar() throws SMTPException, IOException
 	{
 		// if this variable is set to null, than a NPE will be thrown, which is
 		// also good for testing.

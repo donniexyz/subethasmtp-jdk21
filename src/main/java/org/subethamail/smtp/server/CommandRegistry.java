@@ -37,7 +37,7 @@ public enum CommandRegistry {
      *
      */
     private Command command;
-    private List<String> cmdKeys;
+    private final List<String> cmdKeys;
 
     /**
      *
@@ -65,6 +65,6 @@ public enum CommandRegistry {
                 }
             }
         }
-        return null;
+        return new String[]{fullCommand.substring(0, 4).toUpperCase(Locale.ENGLISH), fullCommand.substring(5)};
     }
 }

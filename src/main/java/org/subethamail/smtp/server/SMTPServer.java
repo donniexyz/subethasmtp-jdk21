@@ -41,7 +41,7 @@ import java.util.concurrent.Executors;
  */
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
 public class SMTPServer {
-    private final static Logger log = LoggerFactory.getLogger(SMTPServer.class);
+    private static final Logger log = LoggerFactory.getLogger(SMTPServer.class);
 
     /** Hostname used if we can't find one */
     private final static String UNKNOWN_HOSTNAME = "localhost";

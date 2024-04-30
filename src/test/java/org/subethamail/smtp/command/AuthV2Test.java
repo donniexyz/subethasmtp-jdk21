@@ -19,7 +19,7 @@ import org.subethamail.wiser.Wiser;
  * @author Dony Zulkarnaen
  */
 @ExtendWith(MockitoExtension.class)
-public class AuthTest2 {
+class AuthV2Test {
 
     static final String REQUIRED_USERNAME = "myUserName";
     static final String REQUIRED_PASSWORD = "mySecret01";
@@ -34,12 +34,13 @@ public class AuthTest2 {
 
     static Wiser wiser;
     static Client client;
+    static int port = TestWiser.PORT + 1;
 
 
     @BeforeAll
     @SneakyThrows
     static void init() {
-        wiser = TestWiser.init();
+        wiser = TestWiser.init(port);
 
         wiser.start();
 
@@ -69,7 +70,7 @@ public class AuthTest2 {
 
         Assertions.assertDoesNotThrow(() -> {
 
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             client.expect("220");
 
             client.send("HELO foo.com");
@@ -109,11 +110,11 @@ public class AuthTest2 {
      * {@link org.subethamail.smtp.command.AuthCommand#execute(java.lang.String, org.subethamail.smtp.server.Session)}.
      */
     @Test
-    public void testAuthLogin() {
+    void testAuthLogin() {
 
         Assertions.assertDoesNotThrow(() -> {
 
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
 
             client.expect("220");
 
@@ -150,7 +151,7 @@ public class AuthTest2 {
     void testMailBeforeAuth() {
         Assertions.assertDoesNotThrow(() -> {
 
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             client.expect("220");
 
             client.send("HELO foo.com");

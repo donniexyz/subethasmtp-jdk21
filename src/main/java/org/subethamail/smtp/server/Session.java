@@ -26,7 +26,7 @@ import java.util.Map;
  * @author Jeff Schnitzer
  */
 public class Session implements Runnable, MessageContext {
-    private final static Logger log = LoggerFactory.getLogger(Session.class);
+    private static final Logger log = LoggerFactory.getLogger(Session.class);
 
     /** A link to our parent server
      * -- GETTER --

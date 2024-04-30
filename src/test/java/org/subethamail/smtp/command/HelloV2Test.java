@@ -12,16 +12,17 @@ import org.subethamail.wiser.Wiser;
 /**
  * @author Dony Zulkarnaen
  */
-public class HelloTest2 {
+class HelloV2Test {
 
     static Wiser wiser;
     static Client client;
+    static int port = TestWiser.PORT + 4;
 
 
     @BeforeAll
     @SneakyThrows
     static void init() {
-        wiser = TestWiser.init();
+        wiser = TestWiser.init(port);
 
         wiser.start();
     }
@@ -32,7 +33,7 @@ public class HelloTest2 {
     @Test
     void testHelloCommand() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             client.expect("220");
 
             client.send("HELO");
@@ -55,9 +56,9 @@ public class HelloTest2 {
      *
      */
     @Test
-    public void testHelloReset() {
+    void testHelloReset() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             client.expect("220");
 
             client.send("HELO foo.com");
@@ -78,9 +79,9 @@ public class HelloTest2 {
      *
      */
     @Test
-    public void testEhloSize() {
+    void testEhloSize() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             wiser.getServer().setMaxMessageSize(1000);
             client.expect("220");
 

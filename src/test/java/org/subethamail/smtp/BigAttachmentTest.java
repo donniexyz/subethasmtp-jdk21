@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Disabled("requires manual setup")
 public class BigAttachmentTest
 {
-	private final static Logger log = LoggerFactory.getLogger(BigAttachmentTest.class);
+	private static final Logger log = LoggerFactory.getLogger(BigAttachmentTest.class);
 
 	private final static int SMTP_PORT = 1081;
 	private final static String TO_CHANGE = "<path>/<your_bigfile.ext>";

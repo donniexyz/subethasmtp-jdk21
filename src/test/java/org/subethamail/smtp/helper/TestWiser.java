@@ -10,12 +10,12 @@ public class TestWiser extends Wiser {
     public static final int PORT = 2571;
     public static final String LOCALHOST = "localhost";
 
-    public static TestWiser init() {
+    public static TestWiser init(int port) {
 
         TestWiser wiser;
         wiser = new TestWiser();
         wiser.setHostname(LOCALHOST);
-        wiser.setPort(PORT);
+        wiser.setPort(port);
 
         return wiser;
     }

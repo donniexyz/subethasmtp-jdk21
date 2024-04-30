@@ -11,15 +11,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ExtendWith(MockitoExtension.class)
-public class PlainAuthenticatorTest {
+class PlainAuthenticatorTest {
 
     @Mock
     private SmartClient smartClient;
 
-    private final Map<String, String> extensions = new HashMap<String, String>();
+    private final Map<String, String> extensions = new HashMap<>();
 
     @Test
-    public void testSuccess() throws IOException {
+    void testSuccess() throws IOException {
         extensions.put("AUTH", "GSSAPI DIGEST-MD5 PLAIN");
         PlainAuthenticator authenticator = new PlainAuthenticator(smartClient,
                 "test", "1234");

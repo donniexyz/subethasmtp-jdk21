@@ -17,7 +17,7 @@ import java.util.*;
  */
 @SuppressWarnings("unused")
 public class CommandHandler {
-    private final static Logger log = LoggerFactory.getLogger(CommandHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(CommandHandler.class);
 
     /**
      * The map of known SMTP commands. Keys are upper case names of the

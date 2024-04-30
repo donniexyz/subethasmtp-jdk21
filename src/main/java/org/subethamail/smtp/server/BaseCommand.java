@@ -18,7 +18,7 @@ import java.util.StringTokenizer;
  */
 abstract public class BaseCommand implements Command {
     @SuppressWarnings("unused")
-    private final static Logger log = LoggerFactory.getLogger(BaseCommand.class);
+    private static final Logger log = LoggerFactory.getLogger(BaseCommand.class);
 
     /** Name of the command, ie HELO
      * -- GETTER --

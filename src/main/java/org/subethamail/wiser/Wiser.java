@@ -37,7 +37,7 @@ import java.util.Properties;
 @Getter
 public class Wiser implements SimpleMessageListener {
     /** */
-    private final static Logger log = LoggerFactory.getLogger(Wiser.class);
+    private static final Logger log = LoggerFactory.getLogger(Wiser.class);
 
     /**
      * The server implementation

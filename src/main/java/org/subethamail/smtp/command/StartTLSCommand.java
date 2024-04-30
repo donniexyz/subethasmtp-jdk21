@@ -18,7 +18,7 @@ import java.util.Locale;
  * @author Jeff Schnitzer
  */
 public class StartTLSCommand extends BaseCommand {
-    private final static Logger log = LoggerFactory.getLogger(StartTLSCommand.class);
+    private static final Logger log = LoggerFactory.getLogger(StartTLSCommand.class);
 
     /** */
     public StartTLSCommand() {

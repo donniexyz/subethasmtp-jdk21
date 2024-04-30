@@ -11,15 +11,16 @@ import org.subethamail.wiser.Wiser;
 /**
  * @author Dony Zulkarnaen
  */
-class MailTest2 {
+class MailV2Test {
     static Wiser wiser;
     static Client client;
+    static int port = TestWiser.PORT + 5;
 
 
     @BeforeAll
     @SneakyThrows
     static void init() {
-        wiser = TestWiser.init();
+        wiser = TestWiser.init(port);
 
         wiser.start();
     }
@@ -30,7 +31,7 @@ class MailTest2 {
     @Test
     void testMailNoHello() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             client.expect("220");
 
             client.send("MAIL FROM: test@example.com");
@@ -44,7 +45,7 @@ class MailTest2 {
     @Test
     void testAlreadySpecified() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             client.expect("220");
 
             client.send("HELO foo.com");
@@ -64,7 +65,7 @@ class MailTest2 {
     @Test
     void testInvalidSenders() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             client.expect("220");
 
             client.send("HELO foo.com");
@@ -83,7 +84,7 @@ class MailTest2 {
     @Test
     void testMalformedMailCommand() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             client.expect("220");
 
             client.send("HELO foo.com");
@@ -100,7 +101,7 @@ class MailTest2 {
     @Test
     void testEmptyFromCommand() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             client.expect("220");
 
             client.send("HELO foo.com");
@@ -117,7 +118,7 @@ class MailTest2 {
     @Test
     void testEmptyEmailFromCommand() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             client.expect("220");
 
             client.send("HELO foo.com");
@@ -134,7 +135,7 @@ class MailTest2 {
     @Test
     void testMailWithoutWhitespace() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             client.expect("220");
 
             client.send("HELO foo.com");
@@ -151,7 +152,7 @@ class MailTest2 {
     @Test
     void testSize() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             wiser.getServer().setMaxMessageSize(1000);
             client.expect("220");
 
@@ -169,7 +170,7 @@ class MailTest2 {
     @Test
     void testSizeWithoutSize() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             wiser.getServer().setMaxMessageSize(1000);
             client.expect("220");
 
@@ -187,7 +188,7 @@ class MailTest2 {
     @Test
     void testSizeTooLarge() {
         Assertions.assertDoesNotThrow(() -> {
-            client = new Client("localhost", TestWiser.PORT);
+            client = new Client("localhost", port);
             wiser.getServer().setMaxMessageSize(1000);
             client.expect("220");
 

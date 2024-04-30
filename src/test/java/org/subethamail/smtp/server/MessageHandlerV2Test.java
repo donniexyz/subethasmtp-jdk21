@@ -28,7 +28,7 @@ import static org.mockito.ArgumentMatchers.anyString;
  * @author Dony Zulkarnaen
  */
 @ExtendWith(MockitoExtension.class)
-class MessageHandlerTest2 {
+class MessageHandlerV2Test {
     @Mock
     static private MessageHandlerFactory messageHandlerFactory;
 
