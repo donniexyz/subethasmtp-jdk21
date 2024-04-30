@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.subethamail</groupId>
-    <artifactId>subethasmtp-fork</artifactId>
+    <artifactId>subethasmtp-arben</artifactId>
     <version>4.0.0</version>
 
-    <name>SubEtha SMTP-Fork</name>
+    <name>SubEtha SMTP - Arben</name>
     <description>
-        Fork of SubEtha SMTP dedicated to jdk 21+. SubEtha SMTP is an easy-to-use server-side SMTP library for Java.
+        Arben is a fork of SubEtha SMTP dedicated to jdk 21+. SubEtha SMTP is an easy-to-use server-side SMTP library for Java.
     </description>
 
 
@@ -19,16 +19,16 @@
     </properties>
 
 
-    <url>http://subethasmtp.googlecode.com</url>
+    <url>https://github.com/donniexyz/subethasmtp-jdk21</url>
     <inceptionYear>2006</inceptionYear>
     <scm>
-        <connection>http://subethasmtp.googlecode.com/svn</connection>
-        <developerConnection>https://subethasmtp.googlecode.com/svn</developerConnection>
-        <url>http://subethasmtp.googlecode.com/svn</url>
+        <connection>https://github.com/donniexyz/subethasmtp-jdk21</connection>
+        <developerConnection>https://github.com/donniexyz/subethasmtp-jdk21</developerConnection>
+        <url>https://github.com/donniexyz/subethasmtp-jdk21</url>
     </scm>
     <issueManagement>
-        <system>Google</system>
-        <url>http://code.google.com/p/subethasmtp/issues/list</url>
+        <system>Github</system>
+        <url>https://github.com/donniexyz/subethasmtp-jdk21</url>
     </issueManagement>
     <mailingLists>
         <mailingList>
@@ -82,6 +82,15 @@
             <timezone>+1</timezone>
             <roles>
                 <role>Committer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>donniexyz</id>
+            <name>Dony Zulkarnaen</name>
+            <organization>subethasmtp-arben</organization>
+            <roles>
+                <role>Project Owner</role>
+                <role>Developer</role>
             </roles>
         </developer>
     </developers>
