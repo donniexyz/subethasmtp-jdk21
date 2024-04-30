@@ -30,8 +30,12 @@ During the development of SubEtha's testing harness, we tried out the [Dumbster]
 
 We hate reinventing wheels.  This should be the LAST FREAKING JAVA SMTP IMPLEMENTATION.
 
+### Fast Forward to JDK 21
+There is interesting developments with JDK especially virtual thread feature. The simplicity of SubEthaSMTP can be used as a base for virtual thread SMTP implementation.
+But first, lets upgrade the code base to JDK 21, and that is this repository for.
+
 ## Project Authors ##
-Ian McFarland contributed the first codebase to SubEtha Mail. Then, Jon Stevens and Jeff Schnitzer re-wrote most of Ian's code into what we have today. Edouard De Oliveira and Scott Hernandez have also made significant contributions.
+Ian McFarland contributed the first codebase to SubEtha Mail. Then, Jon Stevens and Jeff Schnitzer re-wrote most of Ian's code into what we have today. Edouard De Oliveira and Scott Hernandez have also made significant contributions. Dony Zulkarnaen upgraded the code base and dependent libraries to the latest, and give it the name SubEthaSMTP-Arben. 
 
 ## Support ##
 If you have any bug reports, questions or comments about SubEtha SMTP, it's best that you bring these issues up on the Mailing Lists.  Please do not email the authors directly.

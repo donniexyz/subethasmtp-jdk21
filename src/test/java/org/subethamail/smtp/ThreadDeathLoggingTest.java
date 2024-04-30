@@ -3,17 +3,15 @@ package org.subethamail.smtp;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.subethamail.smtp.MessageHandlerFactory;
-import org.subethamail.smtp.TooMuchDataException;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.subethamail.smtp.client.SMTPException;
 import org.subethamail.smtp.client.SmartClient;
 import org.subethamail.smtp.helper.SimpleMessageListener;
 import org.subethamail.smtp.helper.SimpleMessageListenerAdapter;
 import org.subethamail.smtp.server.SMTPServer;
 
-public class ThreadDeathLoggingTest
+class ThreadDeathLoggingTest
 {
 	/**
 	 * This test can be used to check if an Error or RuntimeException actually
@@ -24,9 +22,9 @@ public class ThreadDeathLoggingTest
 	 * stderr by the default uncaughtExceptionHandler of the JRE, but this is
 	 * not what you are looking for.
 	 */
-	@Ignore("Requires manual setup and verification")
+	@Disabled("Requires manual setup and verification")
 	@Test()
-	public void testNoMailJar() throws SMTPException, IOException
+	void testNoMailJar() throws SMTPException, IOException
 	{
 		// if this variable is set to null, than a NPE will be thrown, which is
 		// also good for testing.

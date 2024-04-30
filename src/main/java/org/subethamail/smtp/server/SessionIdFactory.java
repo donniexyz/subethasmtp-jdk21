@@ -5,8 +5,8 @@ package org.subethamail.smtp.server;
  * to identify a session in the log files.
  */
 public interface SessionIdFactory {
-	/**
-	 * Returns a new identifier.
-	 */
-	String create();
+    /**
+     * Returns a new identifier.
+     */
+    String create();
 }

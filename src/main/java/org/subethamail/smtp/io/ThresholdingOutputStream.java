@@ -4,6 +4,9 @@
  */
 package org.subethamail.smtp.io;
 
+import lombok.Getter;
+
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -14,116 +17,104 @@ import java.io.OutputStream;
  *
  * @author Jeff Schnitzer
  */
-abstract public class ThresholdingOutputStream extends OutputStream
-{
-	/** */
-	protected OutputStream output;
+public abstract class ThresholdingOutputStream extends OutputStream {
+    /** */
+    protected OutputStream output;
 
-	/** When to trigger */
-	int threshold;
+    /** When to trigger
+     * -- GETTER --
+     * <p>
+     * @return the current threshold value.
+     */
+    @Getter
+    int threshold;
 
-	/** Number of bytes written so far */
-	int written = 0;
+    /** Number of bytes written so far */
+    int written = 0;
 
-	boolean thresholdReached = false;
+    boolean thresholdReached = false;
 
-	/**
-	 */
-	public ThresholdingOutputStream(OutputStream base, int thresholdBytes)
-	{
-		this.output = base;
-		this.threshold = thresholdBytes;
-	}
+    /**
+     */
+    protected ThresholdingOutputStream(OutputStream base, int thresholdBytes) {
+        this.output = base;
+        this.threshold = thresholdBytes;
+    }
 
-	/* (non-Javadoc)
-	 * @see java.io.OutputStream#close()
-	 */
-	@Override
-	public void close() throws IOException
-	{
-		this.output.close();
-	}
-
-
-	/* (non-Javadoc)
-	 * @see java.io.OutputStream#flush()
-	 */
-	@Override
-	public void flush() throws IOException
-	{
-		this.output.flush();
-	}
+    /* (non-Javadoc)
+     * @see java.io.OutputStream#close()
+     */
+    @Override
+    public void close() throws IOException {
+        this.output.close();
+    }
 
 
-	/* (non-Javadoc)
-	 * @see java.io.OutputStream#write(byte[], int, int)
-	 */
-	@Override
-	public void write(byte[] b, int off, int len) throws IOException
-	{
-		this.checkThreshold(len);
-
-		this.output.write(b, off, len);
-
-		this.written += len;
-	}
+    /* (non-Javadoc)
+     * @see java.io.OutputStream#flush()
+     */
+    @Override
+    public void flush() throws IOException {
+        this.output.flush();
+    }
 
 
-	/* (non-Javadoc)
-	 * @see java.io.OutputStream#write(byte[])
-	 */
-	@Override
-	public void write(byte[] b) throws IOException
-	{
-		this.checkThreshold(b.length);
+    /* (non-Javadoc)
+     * @see java.io.OutputStream#write(byte[], int, int)
+     */
+    @Override
+    public void write(@Nonnull byte[] b, int off, int len) throws IOException {
+        this.checkThreshold(len);
 
-		this.output.write(b);
+        this.output.write(b, off, len);
 
-		this.written += b.length;
-	}
+        this.written += len;
+    }
 
 
-	/* (non-Javadoc)
-	 * @see java.io.OutputStream#write(int)
-	 */
-	@Override
-	public void write(int b) throws IOException
-	{
-		this.checkThreshold(1);
+    /* (non-Javadoc)
+     * @see java.io.OutputStream#write(byte[])
+     */
+    @Override
+    public void write(byte[] b) throws IOException {
+        this.checkThreshold(b.length);
 
-		this.output.write(b);
+        this.output.write(b);
 
-		this.written++;
-	}
+        this.written += b.length;
+    }
 
-	/**
-	 * Checks whether reading count bytes would cross the limit.
-	 */
-	protected void checkThreshold(int count) throws IOException
-	{
-		int predicted = this.written + count;
-		if (!this.thresholdReached && predicted > this.threshold)
-		{
-			this.thresholdReached(this.written, predicted);
-			this.thresholdReached = true;
-		}
-	}
 
-	/**
-	 * @return the current threshold value.
-	 */
-	public int getThreshold()
-	{
-		return this.threshold;
-	}
+    /* (non-Javadoc)
+     * @see java.io.OutputStream#write(int)
+     */
+    @Override
+    public void write(int b) throws IOException {
+        this.checkThreshold(1);
 
-	/**
-	 * Called when the threshold is about to be exceeded.  This isn't
-	 * exact; it's called whenever a write would occur that would
-	 * cross the amount. Once it is called, it isn't called again.
-	 *
-	 * @param current is the current number of bytes that have been written
-	 * @param predicted is the total number after the write completes
-	 */
-	abstract protected void thresholdReached(int current, int predicted) throws IOException;
+        this.output.write(b);
+
+        this.written++;
+    }
+
+    /**
+     * Checks whether reading count bytes would cross the limit.
+     */
+    protected void checkThreshold(int count) throws IOException {
+        int predicted = this.written + count;
+        if (!this.thresholdReached && predicted > this.threshold) {
+            this.thresholdReached(this.written, predicted);
+            this.thresholdReached = true;
+        }
+    }
+
+    /**
+     * Called when the threshold is about to be exceeded.  This isn't
+     * exact; it's called whenever a write would occur that would
+     * cross the amount. Once it is called, it isn't called again.
+     *
+     * @param current is the current number of bytes that have been written
+     * @param predicted is the total number after the write completes
+     */
+    protected abstract void thresholdReached(int current, int predicted) throws IOException;
 }

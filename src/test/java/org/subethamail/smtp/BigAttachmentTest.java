@@ -1,8 +1,5 @@
 package org.subethamail.smtp;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -13,28 +10,24 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Properties;
 
-import javax.activation.DataHandler;
-import javax.activation.FileDataSource;
-import javax.mail.Address;
-import javax.mail.Message;
-import javax.mail.Multipart;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.URLName;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
+import com.sun.mail.smtp.SMTPTransport;
+import jakarta.activation.DataHandler;
+import jakarta.activation.FileDataSource;
+import jakarta.mail.*;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.subethamail.wiser.Wiser;
 import org.subethamail.wiser.WiserMessage;
 
-import com.sun.mail.smtp.SMTPTransport;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  * This class tests the transfer speed of emails that carry
@@ -42,10 +35,10 @@ import com.sun.mail.smtp.SMTPTransport;
  *
  * @author De Oliveira Edouard &lt;doe_wanted@yahoo.fr&gt;
  */
-@Ignore("requires manual setup")
+@Disabled("requires manual setup")
 public class BigAttachmentTest
 {
-	private final static Logger log = LoggerFactory.getLogger(BigAttachmentTest.class);
+	private static final Logger log = LoggerFactory.getLogger(BigAttachmentTest.class);
 
 	private final static int SMTP_PORT = 1081;
 	private final static String TO_CHANGE = "<path>/<your_bigfile.ext>";
@@ -57,7 +50,7 @@ public class BigAttachmentTest
 	private Wiser server;
 
 	/** */
-	@Before
+	@BeforeEach
 	protected void setUp() throws Exception
 	{
 		this.server = new Wiser();
@@ -66,7 +59,7 @@ public class BigAttachmentTest
 	}
 
 	/** */
-	@After
+	@AfterEach
 	protected void tearDown() throws Exception
 	{
 		try

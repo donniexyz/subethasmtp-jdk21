@@ -1,91 +1,84 @@
 package org.subethamail.smtp;
 
-import java.util.Properties;
-
-import javax.mail.Session;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
+import jakarta.mail.Session;
+import lombok.SneakyThrows;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.subethamail.wiser.Wiser;
+
+import java.util.Properties;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * This class attempts to quickly start/stop 10 Wiser servers. It makes sure that the socket bind address is correctly
  * shut down.
  *
  * @author Jon Stevens
+ * @author Dony Zulkarnaen
  */
-public class StartStopTest extends TestCase
-{
-	/** */
-	@SuppressWarnings("unused")
-	private static Logger log = LoggerFactory.getLogger(StartStopTest.class);
+class StartStopTest {
+    /**
+     *
+     */
+    @SuppressWarnings("unused")
+    private static final Logger log = LoggerFactory.getLogger(StartStopTest.class);
 
-	/** */
-	public static final int PORT = 2566;
+    /**
+     *
+     */
+    public static final int PORT = 2569;
 
-	/** */
-	protected Session session;
+    /**
+     *
+     */
+    protected Session session;
 
-	protected int counter = 0;
+    protected int counter = 0;
 
-	/** */
-	public StartStopTest(String name)
-	{
-		super(name);
-	}
 
-	/** */
-	@Override
-	protected void setUp() throws Exception
-	{
-		super.setUp();
+    /**
+     *
+     */
+    @BeforeEach
+    protected void setUp() {
 
-		Properties props = new Properties();
-		props.setProperty("mail.smtp.host", "localhost");
-		props.setProperty("mail.smtp.port", Integer.toString(PORT));
-		this.session = Session.getDefaultInstance(props);
-	}
+        Properties props = new Properties();
+        props.setProperty("mail.smtp.host", "localhost");
+        props.setProperty("mail.smtp.port", Integer.toString(PORT));
+        this.session = Session.getDefaultInstance(props);
+    }
 
-	/** */
-	@Override
-	protected void tearDown() throws Exception
-	{
-		super.tearDown();
-	}
 
-	/** */
-	public void testMultipleStartStop() throws Exception
-	{
-		for (int i = 0; i < 10; i++)
-		{
-			this.startStop(i > 5);
-		}
-		assertEquals(this.counter, 10);
-	}
+    /**
+     *
+     */
+    @Test
+    void testMultipleStartStop() {
+        for (int i = 0; i < 10; i++) {
+            this.startStop(i > 5);
+        }
+        assertEquals(10, this.counter);
+    }
 
-	/** */
-	private void startStop(boolean pause) throws Exception
-	{
-		Wiser wiser = new Wiser();
-		wiser.setPort(PORT);
+    /**
+     *
+     */
+    @SneakyThrows
+    private void startStop(boolean pause) {
+        Wiser wiser = new Wiser();
+        wiser.setPort(PORT);
 
-		wiser.start();
+        wiser.start();
 
-		if (pause)
-			Thread.sleep(1000);
+        if (pause)
+            Thread.sleep(1000);
 
-		wiser.stop();
+        wiser.stop();
 
-		this.counter++;
-	}
+        this.counter++;
+    }
 
-	/** */
-	public static Test suite()
-	{
-		return new TestSuite(StartStopTest.class);
-	}
 }

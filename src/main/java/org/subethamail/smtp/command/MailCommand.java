@@ -71,7 +71,7 @@ public class MailCommand extends BaseCommand
 		{
 			// disregard non-numeric values.
 			String ssize = largs.substring(sizec + 6).trim();
-			if (ssize.length() > 0 && ssize.matches("[0-9]+"))
+			if (!ssize.isEmpty() && ssize.matches("[0-9]+"))
 			{
 				size = Integer.parseInt(ssize);
 			}

@@ -10,16 +10,14 @@ import java.io.IOException;
  *
  * @author Evgeny Naumenko
  */
-public class RequireAuthCommandWrapper implements Command
-{
+public class RequireAuthCommandWrapper implements Command {
 
-    private Command wrapped;
+    private final Command wrapped;
 
     /**
      * @param wrapped the wrapped command (not null)
      */
-    public RequireAuthCommandWrapper(Command wrapped)
-    {
+    public RequireAuthCommandWrapper(Command wrapped) {
         this.wrapped = wrapped;
     }
 
@@ -27,8 +25,7 @@ public class RequireAuthCommandWrapper implements Command
      * {@inheritDoc}
      */
     public void execute(String commandString, Session sess)
-            throws IOException, DropConnectionException
-    {
+            throws IOException, DropConnectionException {
         if (!sess.getServer().getRequireAuth() || sess.isAuthenticated())
             wrapped.execute(commandString, sess);
         else
@@ -38,16 +35,14 @@ public class RequireAuthCommandWrapper implements Command
     /**
      * {@inheritDoc}
      */
-    public HelpMessage getHelp() throws CommandException
-    {
+    public HelpMessage getHelp() throws CommandException {
         return wrapped.getHelp();
     }
 
     /**
      * {@inheritDoc}
      */
-    public String getName()
-    {
+    public String getName() {
         return wrapped.getName();
     }
 }

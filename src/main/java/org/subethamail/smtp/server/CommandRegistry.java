@@ -5,57 +5,66 @@
 
 package org.subethamail.smtp.server;
 
-import org.subethamail.smtp.command.AuthCommand;
-import org.subethamail.smtp.command.DataCommand;
-import org.subethamail.smtp.command.EhloCommand;
-import org.subethamail.smtp.command.ExpandCommand;
-import org.subethamail.smtp.command.HelloCommand;
-import org.subethamail.smtp.command.HelpCommand;
-import org.subethamail.smtp.command.MailCommand;
-import org.subethamail.smtp.command.NoopCommand;
-import org.subethamail.smtp.command.QuitCommand;
-import org.subethamail.smtp.command.ReceiptCommand;
-import org.subethamail.smtp.command.ResetCommand;
-import org.subethamail.smtp.command.StartTLSCommand;
-import org.subethamail.smtp.command.VerifyCommand;
+import lombok.Getter;
+import org.subethamail.smtp.command.*;
+
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Enumerates all the Commands made available in this release.
  *
  * @author Marco Trevisan <mrctrevisan@yahoo.it>
+ * @author Dony Zulkarnaen
  */
-public enum CommandRegistry
-{
-	AUTH(new AuthCommand(), true, false),
-	DATA(new DataCommand(), true, true),
-	EHLO(new EhloCommand(), false, false),
-	HELO(new HelloCommand(), true, false),
-	HELP(new HelpCommand(), true, true),
-	MAIL(new MailCommand(), true, true),
-	NOOP(new NoopCommand(), false, false),
-	QUIT(new QuitCommand(), false, false),
-	RCPT(new ReceiptCommand(), true, true),
-	RSET(new ResetCommand(), true, false),
-	STARTTLS(new StartTLSCommand(), false, false),
-	VRFY(new VerifyCommand(), true, true),
-	EXPN(new ExpandCommand(), true, true);
+@Getter
+public enum CommandRegistry {
+    AUTH(List.of("AUTH"), new AuthCommand(), true, false),
+    DATA(List.of("DATA"), new DataCommand(), true, true),
+    EHLO(List.of("EHLO"), new EhloCommand(), false, false),
+    HELO(List.of("HELO"), new HelloCommand(), true, false),
+    HELP(List.of("HELP"), new HelpCommand(), true, true),
+    MAIL(List.of("MAIL FROM", "MAIL"), new MailCommand(), true, true),
+    NOOP(List.of("NOOP"), new NoopCommand(), false, false),
+    QUIT(List.of("QUIT"), new QuitCommand(), false, false),
+    RCPT(List.of("RCPT TO", "RCPT"), new ReceiptCommand(), true, true),
+    RSET(List.of("RSET"), new ResetCommand(), true, false),
+    STARTTLS(List.of("STARTTLS"), new StartTLSCommand(), false, false),
+    VRFY(List.of("VRFY"), new VerifyCommand(), true, true),
+    EXPN(List.of("EXPN"), new ExpandCommand(), true, true);
 
-	private Command command;
+    /**
+     *
+     */
+    private Command command;
+    private final List<String> cmdKeys;
 
-	/** */
-	private CommandRegistry(Command cmd, boolean checkForStartedTLSWhenRequired, boolean checkForAuthIfRequired)
-	{
-		if (checkForStartedTLSWhenRequired)
-			this.command = new RequireTLSCommandWrapper(cmd);
-		else
-			this.command = cmd;
+    /**
+     *
+     */
+    CommandRegistry(List<String> cmdKeys, Command cmd, boolean checkForStartedTLSWhenRequired, boolean checkForAuthIfRequired) {
+        if (checkForStartedTLSWhenRequired)
+            this.command = new RequireTLSCommandWrapper(cmd);
+        else
+            this.command = cmd;
         if (checkForAuthIfRequired)
             this.command = new RequireAuthCommandWrapper(this.command);
-	}
+        this.cmdKeys = cmdKeys;
+    }
 
-	/** */
-	public Command getCommand()
-	{
-		return this.command;
-	}
+    public static String[] split(String fullCommand) {
+        String up = fullCommand.toUpperCase(Locale.ENGLISH);
+        for (CommandRegistry value : CommandRegistry.values()) {
+            for (String cmd : value.cmdKeys) {
+                if (up.startsWith(cmd)) {
+                    if (cmd.length() >= fullCommand.length())
+                        return new String[]{cmd, ""};
+                    if (" \t\n\r\f".contains("" + up.charAt(cmd.length()))) {
+                        return new String[]{cmd, fullCommand.substring(cmd.length() + 1)};
+                    }
+                }
+            }
+        }
+        return new String[]{fullCommand.substring(0, 4).toUpperCase(Locale.ENGLISH), fullCommand.substring(5)};
+    }
 }
