@@ -6,21 +6,24 @@ import java.util.Arrays;
 import java.util.Properties;
 import java.util.Random;
 
-import javax.activation.DataHandler;
-import javax.mail.Message;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.mail.util.ByteArrayDataSource;
+import jakarta.activation.DataHandler;
+import jakarta.mail.Message;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.util.ByteArrayDataSource;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.subethamail.wiser.Wiser;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * This class serves as a test case for both Wiser (since it is used
@@ -33,27 +36,23 @@ import org.subethamail.wiser.Wiser;
  * @author De Oliveira Edouard &lt;doe_wanted@yahoo.fr&gt;
  * @author Ville Skyttä (contributed some encoding tests)
  */
-public class MessageContentTest extends TestCase
+public class MessageContentTest
 {
 	/** */
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(MessageContentTest.class);
 
 	/** */
-	public static final int PORT = 2566;
+	public static final int PORT = 2568;
 
 	/** */
 	protected Wiser wiser;
 	protected Session session;
 
 	/** */
-	public MessageContentTest(String name) { super(name); }
-
-	/** */
-	@Override
+	@BeforeEach
 	protected void setUp() throws Exception
 	{
-		super.setUp();
 
 		Properties props = new Properties();
 		props.setProperty("mail.smtp.host", "localhost");
@@ -67,7 +66,7 @@ public class MessageContentTest extends TestCase
 	}
 
 	/** */
-	@Override
+	@AfterEach
 	protected void tearDown() throws Exception
 	{
 		this.wiser.stop();
@@ -75,10 +74,10 @@ public class MessageContentTest extends TestCase
 
 		this.session = null;
 
-		super.tearDown();
 	}
 
 	/** */
+	@Test
 	public void testReceivedHeader() throws Exception
 	{
 		MimeMessage message = new MimeMessage(this.session);
@@ -97,6 +96,7 @@ public class MessageContentTest extends TestCase
 	}
 
 	/** */
+	@Test
 	public void testMultipleRecipients() throws Exception
 	{
 		MimeMessage message = new MimeMessage(this.session);
@@ -112,6 +112,7 @@ public class MessageContentTest extends TestCase
 	}
 
 	/** */
+	@Test
 	public void testLargeMessage() throws Exception
 	{
 		MimeMessage message = new MimeMessage(this.session);
@@ -131,6 +132,7 @@ public class MessageContentTest extends TestCase
 
 
 	/** */
+	@Test
 	public void testUtf8EightBitMessage() throws Exception
 	{
 		// Beware editor/compiler character encoding issues; safest to put unicode escapes here
@@ -142,6 +144,7 @@ public class MessageContentTest extends TestCase
 	}
 
 	/** */
+	@Test
 	public void testIso88591EightBitMessage() throws Exception
 	{
 		// Beware editor/compiler character encoding issues; safest to put unicode escapes here
@@ -153,6 +156,7 @@ public class MessageContentTest extends TestCase
 	}
 
 	/** */
+	@Test
 	public void testIso885915EightBitMessage() throws Exception
 	{
 		// Beware editor/compiler character encoding issues; safest to put unicode escapes here
@@ -183,6 +187,7 @@ public class MessageContentTest extends TestCase
 	}
 
 	/** */
+	@Test
 	public void testIso2022JPEightBitMessage() throws Exception
   	{
 		String body = "\u3042\u3044\u3046\u3048\u304a\r\n"; // some Japanese letters
@@ -192,6 +197,7 @@ public class MessageContentTest extends TestCase
 	}
 
 	/** */
+	@Test
 	public void testBinaryEightBitMessage() throws Exception
 	{
 		byte[] body = new byte[64];
@@ -219,9 +225,4 @@ public class MessageContentTest extends TestCase
 		assertTrue(Arrays.equals(body, tmp.toByteArray()));
 	}
 
-	/** */
-	public static Test suite()
-	{
-		return new TestSuite(MessageContentTest.class);
-	}
 }

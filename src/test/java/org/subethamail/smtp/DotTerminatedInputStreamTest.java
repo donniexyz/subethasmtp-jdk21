@@ -1,6 +1,6 @@
 package org.subethamail.smtp;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -8,7 +8,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.subethamail.smtp.io.DotTerminatedInputStream;
 
 public class DotTerminatedInputStreamTest
@@ -37,12 +37,12 @@ public class DotTerminatedInputStreamTest
 		assertEquals("..\r\n", readFull(stream));
 	}
 
-	@Test(expected = EOFException.class)
+	@Test
 	public void testMissingDotLine() throws IOException
 	{
 		InputStream in = new ByteArrayInputStream("a\r\n".getBytes("US-ASCII"));
 		DotTerminatedInputStream stream = new DotTerminatedInputStream(in);
-		readFull(stream);
+		assertThrows(EOFException.class, () -> readFull(stream));
 	}
 
 	private String readFull(DotTerminatedInputStream in) throws IOException

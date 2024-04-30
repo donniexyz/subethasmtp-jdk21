@@ -2,15 +2,16 @@ package org.subethamail.smtp;
 
 import java.util.Properties;
 
-import javax.mail.Session;
+import jakarta.mail.Session;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.subethamail.wiser.Wiser;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * This class attempts to quickly start/stop 10 Wiser servers. It makes sure that the socket bind address is correctly
@@ -18,31 +19,25 @@ import org.subethamail.wiser.Wiser;
  *
  * @author Jon Stevens
  */
-public class StartStopTest extends TestCase
+public class StartStopTest
 {
 	/** */
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(StartStopTest.class);
 
 	/** */
-	public static final int PORT = 2566;
+	public static final int PORT = 2569;
 
 	/** */
 	protected Session session;
 
 	protected int counter = 0;
 
-	/** */
-	public StartStopTest(String name)
-	{
-		super(name);
-	}
 
 	/** */
-	@Override
+	@BeforeEach
 	protected void setUp() throws Exception
 	{
-		super.setUp();
 
 		Properties props = new Properties();
 		props.setProperty("mail.smtp.host", "localhost");
@@ -50,14 +45,9 @@ public class StartStopTest extends TestCase
 		this.session = Session.getDefaultInstance(props);
 	}
 
-	/** */
-	@Override
-	protected void tearDown() throws Exception
-	{
-		super.tearDown();
-	}
 
 	/** */
+	@Test
 	public void testMultipleStartStop() throws Exception
 	{
 		for (int i = 0; i < 10; i++)
@@ -83,9 +73,4 @@ public class StartStopTest extends TestCase
 		this.counter++;
 	}
 
-	/** */
-	public static Test suite()
-	{
-		return new TestSuite(StartStopTest.class);
-	}
 }

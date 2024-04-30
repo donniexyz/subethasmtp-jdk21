@@ -1,38 +1,34 @@
 package org.subethamail.smtp.client;
 
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import mockit.Expectations;
-import mockit.Mocked;
-
-import org.junit.Test;
-
+@ExtendWith(MockitoExtension.class)
 public class PlainAuthenticatorTest {
 
-	@Mocked
-	private SmartClient smartClient;
+    @Mock
+    private SmartClient smartClient;
 
-	private final Map<String, String> extensions = new HashMap<String, String>();
+    private final Map<String, String> extensions = new HashMap<String, String>();
 
-	@Test
-	public void testSuccess() throws IOException {
-		extensions.put("AUTH", "GSSAPI DIGEST-MD5 PLAIN");
-		PlainAuthenticator authenticator = new PlainAuthenticator(smartClient,
-				"test", "1234");
+    @Test
+    public void testSuccess() throws IOException {
+        extensions.put("AUTH", "GSSAPI DIGEST-MD5 PLAIN");
+        PlainAuthenticator authenticator = new PlainAuthenticator(smartClient,
+                "test", "1234");
 
-		new Expectations() {
-			{
-				smartClient.getExtensions();
-				result = extensions;
+        Mockito.when(smartClient.getExtensions()).thenReturn(extensions);
+        authenticator.authenticate();
 
-				// base 64 encoded NULL test NULL 1234
-				smartClient.sendAndCheck("AUTH PLAIN AHRlc3QAMTIzNA==");
-			}
-		};
+        Mockito.verify(smartClient).sendAndCheck("AUTH PLAIN AHRlc3QAMTIzNA==");
 
-		authenticator.authenticate();
-	}
+    }
 
 }

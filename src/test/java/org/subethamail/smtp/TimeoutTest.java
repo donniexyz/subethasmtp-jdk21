@@ -1,10 +1,10 @@
 package org.subethamail.smtp;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.net.SocketException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.subethamail.smtp.client.SMTPClient;
 import org.subethamail.wiser.Wiser;
 
@@ -15,7 +15,7 @@ import org.subethamail.wiser.Wiser;
  */
 public class TimeoutTest {
 	/** */
-	public static final int PORT = 2566;
+	public static final int PORT = 2570;
 
 	/** */
 	@Test

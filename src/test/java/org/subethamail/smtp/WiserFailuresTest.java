@@ -9,24 +9,30 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Properties;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.subethamail.wiser.Wiser;
 import org.subethamail.wiser.WiserMessage;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 /**
  * This class tests various aspects of the server for smtp compliance by using Wiser
  */
-public class WiserFailuresTest extends TestCase
+public class WiserFailuresTest
 {
 	private final static String FROM_ADDRESS = "from-addr@localhost";
 	private final static String HOST_NAME = "localhost";
@@ -38,17 +44,11 @@ public class WiserFailuresTest extends TestCase
 	private Wiser server;
 	private Socket socket;
 
-	/** */
-	public WiserFailuresTest(String name)
-	{
-		super(name);
-	}
 
 	/** */
-	@Override
+	@BeforeEach
 	protected void setUp() throws Exception
 	{
-		super.setUp();
 		this.server = new Wiser();
 		this.server.setPort(SMTP_PORT);
 		this.server.start();
@@ -58,10 +58,9 @@ public class WiserFailuresTest extends TestCase
 	}
 
 	/** */
-	@Override
+	@AfterEach
 	protected void tearDown() throws Exception
 	{
-		super.tearDown();
 		try { this.input.close(); } catch (Exception e){};
 		try { this.output.close(); } catch (Exception e){};
 		try { this.socket.close(); } catch (Exception e){};
@@ -72,6 +71,7 @@ public class WiserFailuresTest extends TestCase
 	 * See http://sourceforge.net/tracker/index.php?func=detail&aid=1474700&group_id=78413&atid=553186 for discussion
 	 * about this bug
 	 */
+	@Test
 	public void testMailFromAfterReset() throws IOException, MessagingException
 	{
 		log.info("testMailFromAfterReset() start");
@@ -99,6 +99,7 @@ public class WiserFailuresTest extends TestCase
 	 * See http://sourceforge.net/tracker/index.php?func=detail&aid=1474700&group_id=78413&atid=553186 for discussion
 	 * about this bug
 	 */
+	@Test
 	public void testMailFromWithInitialReset() throws IOException, MessagingException
 	{
 		this.assertConnect();
@@ -118,6 +119,7 @@ public class WiserFailuresTest extends TestCase
 	}
 
 	/** */
+	@Test
 	public void testSendEncodedMessage() throws IOException, MessagingException
 	{
 		String body = "\u3042\u3044\u3046\u3048\u304a"; // some Japanese letters
@@ -141,6 +143,7 @@ public class WiserFailuresTest extends TestCase
 	}
 
 	/** */
+	@Test
 	public void testSendMessageWithCarriageReturn() throws IOException, MessagingException
 	{
 		String bodyWithCR = "\r\n\r\nKeep these\r\npesky\r\n\r\ncarriage returns\r\n";
@@ -161,6 +164,7 @@ public class WiserFailuresTest extends TestCase
 	}
 
 	/** */
+	@Test
 	public void testSendTwoMessagesSameConnection()
 		throws IOException
 	{
@@ -194,6 +198,7 @@ public class WiserFailuresTest extends TestCase
 	}
 
 	/** */
+	@Test
 	public void testSendTwoMsgsWithLogin() throws MessagingException, IOException
 	{
 		try
@@ -225,7 +230,7 @@ public class WiserFailuresTest extends TestCase
 				transport.sendMessage(msg, InternetAddress.parse("dimiter.bakardjiev@musala.com", false));
 				assertEquals(2, this.server.getMessages().size());
 			}
-			catch (javax.mail.MessagingException me)
+			catch (MessagingException me)
 			{
 				me.printStackTrace();
 			}
@@ -321,7 +326,7 @@ public class WiserFailuresTest extends TestCase
 	private void assertConnect() throws IOException
 	{
 		String response = this.readInput();
-		assertTrue(response, response.startsWith("220"));
+		assertTrue(response.startsWith("220"));
 	}
 
 	/** */
@@ -329,7 +334,7 @@ public class WiserFailuresTest extends TestCase
 	{
 		this.send(".");
 		String response = this.readInput();
-		assertTrue(response, response.startsWith("250"));
+		assertTrue( response.startsWith("250"));
 	}
 
 	/** */
@@ -337,7 +342,7 @@ public class WiserFailuresTest extends TestCase
 	{
 		this.send("DATA");
 		String response = this.readInput();
-		assertTrue(response, response.startsWith("354"));
+		assertTrue(response.startsWith("354"));
 	}
 
 	/** */
@@ -345,7 +350,7 @@ public class WiserFailuresTest extends TestCase
 	{
 		this.send("EHLO " + hostName);
 		String response = this.readInput();
-		assertTrue(response, response.startsWith("250"));
+		assertTrue(response.startsWith("250"));
 	}
 
 	/** */
@@ -353,7 +358,7 @@ public class WiserFailuresTest extends TestCase
 	{
 		this.send("MAIL FROM:<" + fromAddress + ">");
 		String response = this.readInput();
-		assertTrue(response, response.startsWith("250"));
+		assertTrue(response.startsWith("250"));
 	}
 
 	/** */
@@ -361,7 +366,7 @@ public class WiserFailuresTest extends TestCase
 	{
 		this.send("QUIT");
 		String response = this.readInput();
-		assertTrue(response, response.startsWith("221"));
+		assertTrue(response.startsWith("221"));
 	}
 
 	/** */
@@ -369,7 +374,7 @@ public class WiserFailuresTest extends TestCase
 	{
 		this.send("RCPT TO:<" + toAddress + ">");
 		String response = this.readInput();
-		assertTrue(response, response.startsWith("250"));
+		assertTrue(response.startsWith("250"));
 	}
 
 	/** */
@@ -377,7 +382,7 @@ public class WiserFailuresTest extends TestCase
 	{
 		this.send("RSET");
 		String response = this.readInput();
-		assertTrue(response, response.startsWith("250"));
+		assertTrue(response.startsWith("250"));
 	}
 
 	/** */

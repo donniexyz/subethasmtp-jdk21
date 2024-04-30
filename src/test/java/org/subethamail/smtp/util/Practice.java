@@ -23,7 +23,7 @@ public class Practice
 	private final static Logger log = LoggerFactory.getLogger(Practice.class);
 
 	/** */
-	public static final int PORT = 2566;
+	public static final int PORT = 2567;
 
 	/** */
 	public static void main(String[] args) throws Exception

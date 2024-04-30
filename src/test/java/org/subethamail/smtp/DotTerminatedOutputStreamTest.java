@@ -1,11 +1,11 @@
 package org.subethamail.smtp;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.subethamail.smtp.io.DotTerminatedOutputStream;
 
 public class DotTerminatedOutputStreamTest

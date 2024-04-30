@@ -1,7 +1,8 @@
 package org.subethamail.smtp.util;
 
-import junit.framework.TestCase;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.subethamail.wiser.Wiser;
@@ -13,14 +14,14 @@ import org.subethamail.wiser.Wiser;
  * @author Jon Stevens
  * @author Jeff Schnitzer
  */
-public abstract class ServerTestCase extends TestCase
+public abstract class ServerTestCase
 {
 	/** */
 	@SuppressWarnings("unused")
 	private final static Logger log = LoggerFactory.getLogger(ServerTestCase.class);
 
 	/** */
-	public static final int PORT = 2566;
+	public static final int PORT = 2572;
 
 	/**
 	 * Override the accept method in Wiser so we can test
@@ -52,14 +53,12 @@ public abstract class ServerTestCase extends TestCase
 	/** */
 	public ServerTestCase(String name)
 	{
-		super(name);
 	}
 
 	/** */
-	@Override
+	@BeforeEach
 	protected void setUp() throws Exception
 	{
-		super.setUp();
 
 		this.wiser = new TestWiser();
 		this.wiser.setHostname("localhost");
@@ -70,7 +69,7 @@ public abstract class ServerTestCase extends TestCase
 	}
 
 	/** */
-	@Override
+	@AfterEach
 	protected void tearDown() throws Exception
 	{
 		this.wiser.stop();
@@ -78,7 +77,6 @@ public abstract class ServerTestCase extends TestCase
 
 		this.c.close();
 
-		super.tearDown();
 	}
 
 	/** */
